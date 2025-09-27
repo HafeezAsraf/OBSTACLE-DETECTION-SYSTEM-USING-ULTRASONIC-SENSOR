@@ -50,17 +50,68 @@ Step 6: Test and Validate
 Step 7: Save Your Work
 14.	Stop Simulation: Click the “Stop Simulation” button to end the test.
 15.	Save Circuit: Click “Save” to store your design and code for future use or presentation.
+## Schematic View:
+<img width="981" height="764" alt="image" src="https://github.com/user-attachments/assets/dd63a3e3-af92-4059-bc07-b3551625dc42" />
+## Circuit Diagram:
+<img width="1919" height="974" alt="image" src="https://github.com/user-attachments/assets/81c8ad2f-96fc-4bf4-876e-7c5b5d937a8e" />
 
 
 ## Code:
+// C++ code
+//
 
+// variables
+int led = 2;
+int buzzer = 8;
+int pingPin = 13;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(led, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop()
+{
+  long duration, cm; // variables to store the duration and distance
+  
+  // ultrasensor state
+  pinMode(pingPin, OUTPUT);
+  digitalWrite(pingPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(pingPin, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(pingPin, LOW);
+	
+  // check input from ultrasensor pingPIN
+  // store the input in duration variable
+  pinMode(pingPin, INPUT);
+  duration = pulseIn(pingPin, HIGH);
+
+  // convert the time into cm
+  cm = duration / 29 / 2;
+
+  // print the result
+  Serial.print(cm);
+  Serial.print("cm");
+  Serial.println();
+  
+  // check if distance drops to 60 cm
+  // buzz the piezzo every 1 sec
+  // blink the light every 1 sec
+  if(cm < 200){
+    digitalWrite(led, HIGH);
+    tone(buzzer, 1000); 
+    delay(1000); // every 1 sec
+    digitalWrite(led, LOW);
+  	noTone(buzzer);        // ... no sound 
+    delay(1000);  
+  }
+
+}
 
 ## Output:
- 
-
-
-## Result
-
-
-Result:
+https://github.com/user-attachments/assets/96212003-5ac8-4efc-a97e-2fb6585bd05f
+## Result:
 The simulation successfully measured the distance between the ultrasonic sensor  HC-SR04 and the object. The real-time distance values were accurately displayed on the serial monitor in centimeters.
